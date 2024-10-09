@@ -1,0 +1,23 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14  
+    steps:
+      - checkout  
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Build Docker Image
+          command: docker build -t my-react-app .
+      - run:
+          name: Run Docker Container
+          command: |
+            docker run -d -p 800:80 my-react-app
+            
+
+workflows:
+  build:
+    jobs:
+      - build
