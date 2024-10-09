@@ -10,11 +10,17 @@ jobs:
           docker_layer_caching: false
       - run:
           name: Build Docker Image
-          command: docker build  -t my-react-app .
+          command: docker build -t my-react-app -t tishajain220/my-react-app:latest .
       - run:
           name: Run Docker Container
           command: |
             docker run -d -p 800:80 my-react-app
+      - run:
+          name: docker login and push
+          command: |
+            echo $DOCKER_PASSWORD | docker login -u tishajain220 --password-stdin
+            docker push tishajain220/my-react-app:latest
+            
             
 
 workflows:
