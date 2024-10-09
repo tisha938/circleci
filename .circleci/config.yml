@@ -1,6 +1,31 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.9.3
+
 jobs:
+  notify:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is a text notification*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+
   build:
     docker:
       - image: circleci/node:14  
@@ -12,18 +37,15 @@ jobs:
           name: Build Docker Image
           command: docker build -t my-react-app -t tishajain220/my-react-app:latest .
       - run:
-          name: Run Docker Container
-          command: |
-            docker run -d -p 800:80 my-react-app
-      - run:
-          name: docker login and push
+          name: Docker Login and Push
           command: |
             echo $DOCKER_PASSWORD | docker login -u tishajain220 --password-stdin
             docker push tishajain220/my-react-app:latest
-            
-            
 
 workflows:
   build:
     jobs:
       - build
+      - notify:
+          requires:
+            - build
