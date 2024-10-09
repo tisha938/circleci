@@ -10,7 +10,7 @@ jobs:
           docker_layer_caching: false
       - run:
           name: Build Docker Image
-          command: docker build -t hello -t my-react-app .
+          command: docker build  -t my-react-app .
       - run:
           name: Run Docker Container
           command: |
