@@ -35,7 +35,7 @@ jobs:
           docker_layer_caching: false
       - run:
           name: Build Docker Image
-          command: docker build -t my-react-app -t tishajain220/my-react-app:latest .
+          command: docker build -t my-react-app -t hello -t tishajain220/my-react-app:latest .
       - run:
           name: Docker Login and Push
           command: |
